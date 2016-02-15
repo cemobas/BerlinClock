@@ -1,42 +1,68 @@
 package com.ubs.opsit.interviews;
 
+import com.ubs.opsit.interviews.exception.IllegalTimeInputException;
 
-public class InputUtils implements TimeConverter {
 
-	@Override
-	public String convertTime(String aTime) {
-		StringBuffer sb = new StringBuffer();
-		return sb.toString();
-	}
+public class InputUtils {
 
-	public static String[] getHhMmSs(String time) throws IllegalArgumentException {
-		final String separator = ":";
-		final String[] timeArr = time.split(separator);
+	private static final String SEPARATOR = ":";
+
+	/**
+	 * Returns array form of the time input
+	 * @param time
+	 * @return
+	 * @throws IllegalTimeInputException
+	 */
+	public static String[] getHhMmSs(final String time) throws IllegalTimeInputException {
+		final String[] timeArr = time.split(SEPARATOR);
+		if(timeArr.length != 3) {
+			throw new IllegalTimeInputException(IllegalTimeInputException.DESC_ILL_FORMAT, time);
+		}
 		if(!hasOnlyTwoDigits(timeArr[0]) || !isHourWithinBoundary(timeArr[0])) {
-			throw new IllegalArgumentException("Incorrect hour format: " + timeArr[0]);
+			throw new IllegalTimeInputException(IllegalTimeInputException.DESC_ILL_HOUR, timeArr[0]);
 		}
 		if(!hasOnlyTwoDigits(timeArr[1]) || !isMinuteWithinBoundary(timeArr[1])) {
-			throw new IllegalArgumentException("Incorrect minute format: " + timeArr[1]);
+			throw new IllegalTimeInputException(IllegalTimeInputException.DESC_ILL_MINUTE, timeArr[1]);
 		}
 		if(!hasOnlyTwoDigits(timeArr[2]) || !isMinuteWithinBoundary(timeArr[2])) {
-			throw new IllegalArgumentException("Incorrect second format: " + timeArr[2]);
+			throw new IllegalTimeInputException(IllegalTimeInputException.DESC_ILL_SECOND, timeArr[2]);
 		}
 		return timeArr;
 	}
 
-	public static boolean hasOnlyTwoDigits(String digits) {
+	/**
+	 * Checks if the value has two digits: no more, no less
+	 * @param digits
+	 * @return
+	 */
+	public static boolean hasOnlyTwoDigits(final String digits) {
 		return digits.matches("\\d{2}");
 	}
 
-	public static boolean isHourWithinBoundary(String string) {
+	/**
+	 * Checks if the hour value is within the boundary of 24 hours
+	 * @param string
+	 * @return
+	 */
+	public static boolean isHourWithinBoundary(final String string) {
 		return Integer.valueOf(string) >= 0 && Integer.valueOf(string) <= 24; 
 	}
 
-	public static boolean isMinuteWithinBoundary(String string) {
+	/**
+	 * Checks if the minute value is within the boundary of 60 minutes
+	 * @param string
+	 * @return
+	 */
+	public static boolean isMinuteWithinBoundary(final String string) {
 		return Integer.valueOf(string) >= 0 && Integer.valueOf(string) < 60; 
 	}
 
-	public static boolean isSecondWithinBoundary(String string) {
+	/**
+	 * Checks if the second value is within the boundary of 60 seconds
+	 * @param string
+	 * @return
+	 */
+	public static boolean isSecondWithinBoundary(final String string) {
 		return Integer.valueOf(string) >= 0 && Integer.valueOf(string) < 60; 
 	}
 
