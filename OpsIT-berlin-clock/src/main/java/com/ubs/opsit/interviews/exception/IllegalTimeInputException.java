@@ -1,6 +1,6 @@
 package com.ubs.opsit.interviews.exception;
 
-public class IllegalTimeInputException extends IllegalArgumentException {
+public class IllegalTimeInputException extends Exception {
 
 	public static final String DESC_ILL_HOUR = "Incorrect hour format";
 	public static final String DESC_ILL_MINUTE = "Incorrect minute format.";

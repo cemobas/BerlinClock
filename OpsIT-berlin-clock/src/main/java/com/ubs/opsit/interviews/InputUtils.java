@@ -24,7 +24,7 @@ public class InputUtils {
 		if(!hasOnlyTwoDigits(timeArr[1]) || !isMinuteWithinBoundary(timeArr[1])) {
 			throw new IllegalTimeInputException(IllegalTimeInputException.DESC_ILL_MINUTE, timeArr[1]);
 		}
-		if(!hasOnlyTwoDigits(timeArr[2]) || !isMinuteWithinBoundary(timeArr[2])) {
+		if(!hasOnlyTwoDigits(timeArr[2]) || !isSecondWithinBoundary(timeArr[2])) {
 			throw new IllegalTimeInputException(IllegalTimeInputException.DESC_ILL_SECOND, timeArr[2]);
 		}
 		return timeArr;
@@ -35,7 +35,7 @@ public class InputUtils {
 	 * @param digits
 	 * @return
 	 */
-	public static boolean hasOnlyTwoDigits(final String digits) {
+	private static boolean hasOnlyTwoDigits(final String digits) {
 		return digits.matches("\\d{2}");
 	}
 
@@ -44,7 +44,7 @@ public class InputUtils {
 	 * @param string
 	 * @return
 	 */
-	public static boolean isHourWithinBoundary(final String string) {
+	private static boolean isHourWithinBoundary(final String string) {
 		return Integer.valueOf(string) >= 0 && Integer.valueOf(string) <= 24; 
 	}
 
@@ -53,7 +53,7 @@ public class InputUtils {
 	 * @param string
 	 * @return
 	 */
-	public static boolean isMinuteWithinBoundary(final String string) {
+	private static boolean isMinuteWithinBoundary(final String string) {
 		return Integer.valueOf(string) >= 0 && Integer.valueOf(string) < 60; 
 	}
 
@@ -62,7 +62,7 @@ public class InputUtils {
 	 * @param string
 	 * @return
 	 */
-	public static boolean isSecondWithinBoundary(final String string) {
+	private static boolean isSecondWithinBoundary(final String string) {
 		return Integer.valueOf(string) >= 0 && Integer.valueOf(string) < 60; 
 	}
 

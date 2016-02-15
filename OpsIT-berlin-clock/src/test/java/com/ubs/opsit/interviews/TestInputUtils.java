@@ -1,8 +1,6 @@
 package com.ubs.opsit.interviews;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -12,60 +10,105 @@ public class TestInputUtils {
 
 	@Test
 	public void testGetHhMmSs() {
-		assertArrayEquals(new String[]{"01", "02", "03"}, InputUtils.getHhMmSs("01:02:03"));
-	}
-	
-	@Test(expected=IllegalTimeInputException.class)
-	public void testWhenInputHasLessThanEightCharacters() {
-		InputUtils.getHhMmSs("0101:60");
-	}
-	
-	@Test
-	public void testHasOnlyTwoDigits(){
-		assertTrue(InputUtils.hasOnlyTwoDigits("00"));
-		assertFalse(InputUtils.hasOnlyTwoDigits("0A"));
-		assertFalse(InputUtils.hasOnlyTwoDigits("-0A"));
+		try {
+			assertArrayEquals(new String[] { "01", "02", "03" },
+					InputUtils.getHhMmSs("01:02:03"));
+		} catch (IllegalTimeInputException e) {
+			fail("Test failed.");
+		}
 	}
 
 	@Test
-	public void testIsHourWithinBoundary(){
-		assertTrue(InputUtils.isHourWithinBoundary("00"));
-		assertTrue(InputUtils.isHourWithinBoundary("24"));
-		assertFalse(InputUtils.isHourWithinBoundary("25"));
+	public void testWhenOneSeparatorIsMissing() {
+		final String value = "0101:60";
+		try {
+			InputUtils.getHhMmSs(value);
+		} catch (IllegalTimeInputException e) {
+			assertEquals(IllegalTimeInputException.DESC_ILL_FORMAT,
+					e.getMessage());
+			assertEquals(value, e.getValue());
+		}
 	}
 
 	@Test
-	public void testIsMinuteWithinBoundary(){
-		assertTrue(InputUtils.isMinuteWithinBoundary("00"));
-		assertTrue(InputUtils.isMinuteWithinBoundary("59"));
-		assertFalse(InputUtils.isMinuteWithinBoundary("60"));
+	public void testWhenInputIsOverloadedWithAdditionalSection() {
+		final String value = "01:01:60:00";
+		try {
+			InputUtils.getHhMmSs(value);
+		} catch (IllegalTimeInputException e) {
+			assertEquals(IllegalTimeInputException.DESC_ILL_FORMAT,
+					e.getMessage());
+			assertEquals(value, e.getValue());
+		}
 	}
 
 	@Test
-	public void testIsSecondWithinBoundary(){
-		assertTrue(InputUtils.isSecondWithinBoundary("00"));
-		assertTrue(InputUtils.isSecondWithinBoundary("59"));
-		assertFalse(InputUtils.isSecondWithinBoundary("60"));
+	public void testTwoDigitsHourViolation() {
+		final String value = "A0:02:03";
+		try {
+			InputUtils.getHhMmSs(value);
+		} catch (IllegalTimeInputException e) {
+			assertEquals(IllegalTimeInputException.DESC_ILL_HOUR,
+					e.getMessage());
+			assertEquals("A0", e.getValue());
+		}
 	}
-	
-	@Test(expected=IllegalTimeInputException.class)
-	public void testHourBoundaryCheckFailure(){
-		InputUtils.getHhMmSs("25:02:03");
+
+	@Test
+	public void testTwoDigitsMinuteViolation() {
+		final String value = "01:0A:03";
+		try {
+			InputUtils.getHhMmSs(value);
+		} catch (IllegalTimeInputException e) {
+			assertEquals(IllegalTimeInputException.DESC_ILL_MINUTE,
+					e.getMessage());
+			assertEquals("0A", e.getValue());
+		}
 	}
-	
-	@Test(expected=IllegalTimeInputException.class)
-	public void testMinuteBoundaryCheckFailure(){
-		InputUtils.getHhMmSs("23:60:03");
+
+	@Test
+	public void testTwoDigitsSecondViolation() {
+		final String value = "01:02:0A";
+		try {
+			InputUtils.getHhMmSs(value);
+		} catch (IllegalTimeInputException e) {
+			assertEquals(IllegalTimeInputException.DESC_ILL_SECOND,
+					e.getMessage());
+			assertEquals("0A", e.getValue());
+		}
 	}
-	
-	@Test(expected=IllegalTimeInputException.class)
-	public void testSecondBoundaryCheckFailure(){
-		InputUtils.getHhMmSs("23:59:60");
+
+	@Test
+	public void testHourBoundaryCheckFailure() {
+		try {
+			InputUtils.getHhMmSs("25:02:03");
+		} catch (IllegalTimeInputException e) {
+			assertEquals(IllegalTimeInputException.DESC_ILL_HOUR,
+					e.getMessage());
+			assertEquals("25", e.getValue());
+		}
 	}
-	
-	@Test(expected=IllegalTimeInputException.class)
-	public void testWhenInputHasNonDigitCharacters() {
-		InputUtils.getHhMmSs("AA:AA:60");
+
+	@Test
+	public void testMinuteBoundaryCheckFailure() {
+		try {
+			InputUtils.getHhMmSs("23:60:03");
+		} catch (IllegalTimeInputException e) {
+			assertEquals(IllegalTimeInputException.DESC_ILL_MINUTE,
+					e.getMessage());
+			assertEquals("60", e.getValue());
+		}
+	}
+
+	@Test
+	public void testSecondBoundaryCheckFailure() {
+		try {
+			InputUtils.getHhMmSs("23:59:60");
+		} catch (IllegalTimeInputException e) {
+			assertEquals(IllegalTimeInputException.DESC_ILL_SECOND,
+					e.getMessage());
+			assertEquals("60", e.getValue());
+		}
 	}
 
 }
