@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.ubs.opsit.interviews.exception.IllegalTimeInputException;
+import com.ubs.opsit.interviews.tools.InputUtils;
 
 public class TestInputUtils {
 

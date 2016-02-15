@@ -5,9 +5,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestBerlinConverter {
+import com.ubs.opsit.interviews.tools.BerlinUtils;
 
-	private BerlinConverter bConverter;
+public class TestBerlinUtils {
+
 	private String midnightTime;
 	private StringBuffer midnightBerlin;
 	private StringBuffer second;
@@ -16,7 +17,6 @@ public class TestBerlinConverter {
 	
 	@Before
 	public void setUp(){
-		this.bConverter = new BerlinConverter();
 		this.midnightTime = "00:00:00";
 		// Second
 		this.second = new StringBuffer();
@@ -43,23 +43,16 @@ public class TestBerlinConverter {
 
 	@Test
 	public void testGetBerlinSecond(){
-		this.bConverter = new BerlinConverter();
-		final String berlinSecond = bConverter.getBerlinSecond(this.midnightTime);
-		assertEquals(this.second.toString(), berlinSecond);
+		assertEquals(this.second.toString(), BerlinUtils.getBerlinSecond(this.midnightTime));
 	}
 
 	@Test
 	public void testGetBerlinHour(){
-		this.bConverter = new BerlinConverter();
-		final String berlinHour = bConverter.getBerlinHour(this.midnightTime);
-		assertEquals(this.hour.toString(), berlinHour);
+		assertEquals(this.hour.toString(), BerlinUtils.getBerlinHour(this.midnightTime));
 	}
 
 	@Test
 	public void testGetBerlinMinute(){
-		this.bConverter = new BerlinConverter();
-		final String berlinMinute = bConverter.getBerlinMinute(this.midnightTime);
-		assertEquals(this.minute.toString(), berlinMinute);
+		assertEquals(this.minute.toString(), BerlinUtils.getBerlinMinute(this.midnightTime));
 	}
-
 }

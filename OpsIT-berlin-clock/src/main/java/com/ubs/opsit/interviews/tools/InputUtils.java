@@ -1,4 +1,4 @@
-package com.ubs.opsit.interviews;
+package com.ubs.opsit.interviews.tools;
 
 import com.ubs.opsit.interviews.exception.IllegalTimeInputException;
 
