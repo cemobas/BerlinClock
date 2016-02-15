@@ -1,58 +1,83 @@
 package com.ubs.opsit.interviews;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ubs.opsit.interviews.exception.BerlinClockException;
 import com.ubs.opsit.interviews.tools.BerlinUtils;
+import com.ubs.opsit.interviews.tools.ExcType;
 
 public class TestBerlinUtils {
 
 	private String midnightTime;
-	private StringBuffer midnightBerlin;
-	private StringBuffer second;
-	private StringBuffer hour;
-	private StringBuffer minute;
 	
 	@Before
 	public void setUp(){
 		this.midnightTime = "00:00:00";
-		// Second
-		this.second = new StringBuffer();
-		this.second.append("Y");
-		// Hour
-		this.hour = new StringBuffer();
-		this.hour.append("OOOO");
-		this.hour.append(System.getProperty("line.separator"));
-		this.hour.append("OOOO");
-		// Minute
-		this.minute = new StringBuffer();
-		this.minute.append("OOOOOOOOOOO");
-		this.minute.append(System.getProperty("line.separator"));
-		this.minute.append("OOOO");
-		// Initializing midnight time
-		this.midnightBerlin = new StringBuffer();
-		this.midnightBerlin.append(this.second);
-		this.midnightBerlin.append(System.getProperty("line.separator"));
-		this.midnightBerlin.append(this.hour);
-		this.midnightBerlin.append(System.getProperty("line.separator"));
-		this.midnightBerlin.append(this.minute);
-		
 	}
 
 	@Test
 	public void testGetBerlinSecond(){
-		assertEquals(this.second.toString(), BerlinUtils.getBerlinSecond(this.midnightTime));
+		try {
+			assertEquals("Y", BerlinUtils.getBerlinSecond(this.midnightTime));
+		} catch (BerlinClockException e) {
+			fail("GetBerlinSecond failed!");
+		}
 	}
 
 	@Test
 	public void testGetBerlinHour(){
-		assertEquals(this.hour.toString(), BerlinUtils.getBerlinHour(this.midnightTime));
+		try {
+			final StringBuffer hour = new StringBuffer();
+			hour.append("OOOO");
+			hour.append(System.getProperty("line.separator"));
+			hour.append("OOOO");
+			assertEquals(hour.toString(), BerlinUtils.getBerlinHour(this.midnightTime));
+		} catch (BerlinClockException e) {
+			fail("GetBerlinHour failed!");
+		}
 	}
 
 	@Test
 	public void testGetBerlinMinute(){
-		assertEquals(this.minute.toString(), BerlinUtils.getBerlinMinute(this.midnightTime));
+		try {
+			// Minute
+			final StringBuffer minute = new StringBuffer();
+			minute.append("OOOOOOOOOOO");
+			minute.append(System.getProperty("line.separator"));
+			minute.append("OOOO");
+			assertEquals(minute.toString(), BerlinUtils.getBerlinMinute(this.midnightTime));
+		} catch (BerlinClockException e) {
+			fail("GetBerlinHour failed!");
+		}
+	}
+	
+	@Test
+	public void testInputFailureOnSecond() {
+		try {
+			BerlinUtils.getBerlinMinute("01:02:60");
+		} catch (BerlinClockException e) {
+			assertEquals(ExcType.INPUT, e.getExcType());
+		}
+	}
+	
+	@Test
+	public void testInputFailureOnHour() {
+		try {
+			BerlinUtils.getBerlinHour("25:00:00");
+		} catch (BerlinClockException e) {
+			assertEquals(ExcType.INPUT, e.getExcType());
+		}
+	}
+	
+	@Test
+	public void testInputFailureOnMinute() {
+		try {
+			BerlinUtils.getBerlinMinute("01:60:00");
+		} catch (BerlinClockException e) {
+			assertEquals(ExcType.INPUT, e.getExcType());
+		}
 	}
 }

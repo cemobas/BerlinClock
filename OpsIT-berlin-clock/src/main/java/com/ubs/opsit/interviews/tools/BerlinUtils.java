@@ -1,5 +1,6 @@
 package com.ubs.opsit.interviews.tools;
 
+import com.ubs.opsit.interviews.exception.BerlinClockException;
 import com.ubs.opsit.interviews.exception.IllegalTimeInputException;
 
 /**
@@ -19,15 +20,15 @@ public class BerlinUtils {
 	 * Returns Berlin-Second value out of given time
 	 * @param time
 	 * @return
+	 * @throws BerlinClockException 
 	 */
-	public static String getBerlinSecond(String time) {
+	public static String getBerlinSecond(String time) throws BerlinClockException {
 		StringBuffer berlinSecond = new StringBuffer();
 		try {
 			processRow1(berlinSecond,
 					Integer.valueOf(InputUtils.getHhMmSs(time)[0]));
 		} catch (IllegalTimeInputException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new BerlinClockException(e.getMessage() + ExcType.INPUT.getPhrase() + e.getValue(), ExcType.INPUT);
 		}
 		return berlinSecond.toString();
 	}
@@ -36,8 +37,9 @@ public class BerlinUtils {
 	 * Returns Berlin-Hour value out of given time
 	 * @param time
 	 * @return
+	 * @throws BerlinClockException 
 	 */
-	public static String getBerlinHour(String time) {
+	public static String getBerlinHour(String time) throws BerlinClockException {
 		StringBuffer berlinHour = new StringBuffer();
 		try {
 			final int timeHour = Integer.valueOf(InputUtils.getHhMmSs(time)[1]);
@@ -45,8 +47,7 @@ public class BerlinUtils {
 			berlinHour.append(System.getProperty("line.separator"));
 			processRow3(berlinHour, timeHour);
 		} catch (IllegalTimeInputException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new BerlinClockException(e.getMessage() + ExcType.INPUT.getPhrase() + e.getValue(), ExcType.INPUT);
 		}
 		return berlinHour.toString();
 	}
@@ -55,8 +56,9 @@ public class BerlinUtils {
 	 * Returns Berlin-Minute value out of given time
 	 * @param time
 	 * @return
+	 * @throws BerlinClockException 
 	 */
-	public static String getBerlinMinute(String time) {
+	public static String getBerlinMinute(String time) throws BerlinClockException {
 		StringBuffer berlinMinute = new StringBuffer();
 		try {
 			final int timeMinute = Integer.valueOf(InputUtils.getHhMmSs(time)[2]);
@@ -64,8 +66,7 @@ public class BerlinUtils {
 			berlinMinute.append(System.getProperty("line.separator"));
 			processRow5(berlinMinute, timeMinute);
 		} catch (IllegalTimeInputException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new BerlinClockException(e.getMessage() + ExcType.INPUT.getPhrase() + e.getValue(), ExcType.INPUT);
 		}
 		return berlinMinute.toString();
 	}
