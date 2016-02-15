@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -16,6 +17,11 @@ public class BerlinClockFixture {
     private TimeConverter berlinClock;
     private String theTime;
 
+    @Before
+    public void setUp(){
+    	this.berlinClock = new BerlinConverter();
+    }
+    
     @Test
     public void berlinClockAcceptanceTests() throws Exception {
         aBehaviouralTestRunner()

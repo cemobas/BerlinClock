@@ -1,10 +1,13 @@
 package com.ubs.opsit.interviews;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
 import com.ubs.opsit.interviews.exception.IllegalTimeInputException;
+import com.ubs.opsit.interviews.tools.ExcType;
 import com.ubs.opsit.interviews.tools.InputUtils;
 
 public class TestInputUtils {
@@ -25,8 +28,8 @@ public class TestInputUtils {
 		try {
 			InputUtils.getHhMmSs(value);
 		} catch (IllegalTimeInputException e) {
-			assertEquals(IllegalTimeInputException.DESC_ILL_FORMAT,
-					e.getMessage());
+			assertEquals(ExcType.FORMAT,
+					e.getExcType());
 			assertEquals(value, e.getValue());
 		}
 	}
@@ -37,8 +40,8 @@ public class TestInputUtils {
 		try {
 			InputUtils.getHhMmSs(value);
 		} catch (IllegalTimeInputException e) {
-			assertEquals(IllegalTimeInputException.DESC_ILL_FORMAT,
-					e.getMessage());
+			assertEquals(ExcType.FORMAT,
+					e.getExcType());
 			assertEquals(value, e.getValue());
 		}
 	}
@@ -49,8 +52,8 @@ public class TestInputUtils {
 		try {
 			InputUtils.getHhMmSs(value);
 		} catch (IllegalTimeInputException e) {
-			assertEquals(IllegalTimeInputException.DESC_ILL_HOUR,
-					e.getMessage());
+			assertEquals(ExcType.HOUR,
+					e.getExcType());
 			assertEquals("A0", e.getValue());
 		}
 	}
@@ -61,8 +64,8 @@ public class TestInputUtils {
 		try {
 			InputUtils.getHhMmSs(value);
 		} catch (IllegalTimeInputException e) {
-			assertEquals(IllegalTimeInputException.DESC_ILL_MINUTE,
-					e.getMessage());
+			assertEquals(ExcType.MINUTE,
+					e.getExcType());
 			assertEquals("0A", e.getValue());
 		}
 	}
@@ -73,8 +76,8 @@ public class TestInputUtils {
 		try {
 			InputUtils.getHhMmSs(value);
 		} catch (IllegalTimeInputException e) {
-			assertEquals(IllegalTimeInputException.DESC_ILL_SECOND,
-					e.getMessage());
+			assertEquals(ExcType.SECOND,
+					e.getExcType());
 			assertEquals("0A", e.getValue());
 		}
 	}
@@ -84,8 +87,8 @@ public class TestInputUtils {
 		try {
 			InputUtils.getHhMmSs("25:02:03");
 		} catch (IllegalTimeInputException e) {
-			assertEquals(IllegalTimeInputException.DESC_ILL_HOUR,
-					e.getMessage());
+			assertEquals(ExcType.HOUR,
+					e.getExcType());
 			assertEquals("25", e.getValue());
 		}
 	}
@@ -95,8 +98,8 @@ public class TestInputUtils {
 		try {
 			InputUtils.getHhMmSs("23:60:03");
 		} catch (IllegalTimeInputException e) {
-			assertEquals(IllegalTimeInputException.DESC_ILL_MINUTE,
-					e.getMessage());
+			assertEquals(ExcType.MINUTE,
+					e.getExcType());
 			assertEquals("60", e.getValue());
 		}
 	}
@@ -106,8 +109,8 @@ public class TestInputUtils {
 		try {
 			InputUtils.getHhMmSs("23:59:60");
 		} catch (IllegalTimeInputException e) {
-			assertEquals(IllegalTimeInputException.DESC_ILL_SECOND,
-					e.getMessage());
+			assertEquals(ExcType.SECOND,
+					e.getExcType());
 			assertEquals("60", e.getValue());
 		}
 	}

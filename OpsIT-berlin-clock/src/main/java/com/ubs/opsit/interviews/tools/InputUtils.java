@@ -2,10 +2,14 @@ package com.ubs.opsit.interviews.tools;
 
 import com.ubs.opsit.interviews.exception.IllegalTimeInputException;
 
-
+/**
+ * Input operations are handled in this class.
+ * @author CEMOBAS
+ *
+ */
 public class InputUtils {
 
-	private static final String SEPARATOR = ":";
+	private static final String TIME_SEPARATOR = ":";
 
 	/**
 	 * Returns array form of the time input
@@ -14,18 +18,18 @@ public class InputUtils {
 	 * @throws IllegalTimeInputException
 	 */
 	public static String[] getHhMmSs(final String time) throws IllegalTimeInputException {
-		final String[] timeArr = time.split(SEPARATOR);
+		final String[] timeArr = time.split(TIME_SEPARATOR);
 		if(timeArr.length != 3) {
-			throw new IllegalTimeInputException(IllegalTimeInputException.DESC_ILL_FORMAT, time);
+			throw new IllegalTimeInputException(ExcType.FORMAT, time);
 		}
 		if(!hasOnlyTwoDigits(timeArr[0]) || !isHourWithinBoundary(timeArr[0])) {
-			throw new IllegalTimeInputException(IllegalTimeInputException.DESC_ILL_HOUR, timeArr[0]);
+			throw new IllegalTimeInputException(ExcType.HOUR, timeArr[0]);
 		}
 		if(!hasOnlyTwoDigits(timeArr[1]) || !isMinuteWithinBoundary(timeArr[1])) {
-			throw new IllegalTimeInputException(IllegalTimeInputException.DESC_ILL_MINUTE, timeArr[1]);
+			throw new IllegalTimeInputException(ExcType.MINUTE, timeArr[1]);
 		}
 		if(!hasOnlyTwoDigits(timeArr[2]) || !isSecondWithinBoundary(timeArr[2])) {
-			throw new IllegalTimeInputException(IllegalTimeInputException.DESC_ILL_SECOND, timeArr[2]);
+			throw new IllegalTimeInputException(ExcType.SECOND, timeArr[2]);
 		}
 		return timeArr;
 	}

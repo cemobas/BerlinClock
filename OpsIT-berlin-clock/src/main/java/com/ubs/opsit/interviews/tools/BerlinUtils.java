@@ -1,10 +1,8 @@
 package com.ubs.opsit.interviews.tools;
 
-import com.ubs.opsit.interviews.exception.BerlinClockException;
-import com.ubs.opsit.interviews.exception.IllegalTimeInputException;
-
 /**
  * Utility class for processing operations.
+ * 
  * @author CEMOBAS
  *
  */
@@ -15,64 +13,51 @@ public class BerlinUtils {
 	private static char LAMP_YELLOW = 'Y';
 	private static char LAMP_RED = 'R';
 	private static char LAMP_OFF = 'O';
+	private static String BERLIN_SEPARATOR = "\r\n";
 
 	/**
 	 * Returns Berlin-Second value out of given time
+	 * 
 	 * @param time
 	 * @return
-	 * @throws BerlinClockException 
 	 */
-	public static String getBerlinSecond(String time) throws BerlinClockException {
+	public static String getBerlinSecond(final int second) {
 		StringBuffer berlinSecond = new StringBuffer();
-		try {
-			processRow1(berlinSecond,
-					Integer.valueOf(InputUtils.getHhMmSs(time)[0]));
-		} catch (IllegalTimeInputException e) {
-			throw new BerlinClockException(e.getMessage() + ExcType.INPUT.getPhrase() + e.getValue(), ExcType.INPUT);
-		}
+		processRow1(berlinSecond, second);
 		return berlinSecond.toString();
 	}
 
 	/**
 	 * Returns Berlin-Hour value out of given time
-	 * @param time
+	 * 
+	 * @param hour
 	 * @return
-	 * @throws BerlinClockException 
 	 */
-	public static String getBerlinHour(String time) throws BerlinClockException {
+	public static String getBerlinHour(final int hour) {
 		StringBuffer berlinHour = new StringBuffer();
-		try {
-			final int timeHour = Integer.valueOf(InputUtils.getHhMmSs(time)[1]);
-			processRow2(berlinHour, timeHour);
-			berlinHour.append(System.getProperty("line.separator"));
-			processRow3(berlinHour, timeHour);
-		} catch (IllegalTimeInputException e) {
-			throw new BerlinClockException(e.getMessage() + ExcType.INPUT.getPhrase() + e.getValue(), ExcType.INPUT);
-		}
+		processRow2(berlinHour, hour);
+		berlinHour.append(BERLIN_SEPARATOR);
+		processRow3(berlinHour, hour);
 		return berlinHour.toString();
 	}
 
 	/**
 	 * Returns Berlin-Minute value out of given time
+	 * 
 	 * @param time
 	 * @return
-	 * @throws BerlinClockException 
 	 */
-	public static String getBerlinMinute(String time) throws BerlinClockException {
+	public static String getBerlinMinute(final int minute) {
 		StringBuffer berlinMinute = new StringBuffer();
-		try {
-			final int timeMinute = Integer.valueOf(InputUtils.getHhMmSs(time)[2]);
-			processRow4(berlinMinute, timeMinute);
-			berlinMinute.append(System.getProperty("line.separator"));
-			processRow5(berlinMinute, timeMinute);
-		} catch (IllegalTimeInputException e) {
-			throw new BerlinClockException(e.getMessage() + ExcType.INPUT.getPhrase() + e.getValue(), ExcType.INPUT);
-		}
+		processRow4(berlinMinute, minute);
+		berlinMinute.append(BERLIN_SEPARATOR);
+		processRow5(berlinMinute, minute);
 		return berlinMinute.toString();
 	}
 
 	/**
 	 * Processes 1st row on Berlin Clock to display Second.
+	 * 
 	 * @param sb
 	 * @param value
 	 */
@@ -86,6 +71,7 @@ public class BerlinUtils {
 
 	/**
 	 * Processes 2nd row on Berlin Clock to display Hour.
+	 * 
 	 * @param sb
 	 * @param value
 	 */
@@ -94,9 +80,9 @@ public class BerlinUtils {
 		turnOffLamps(sb, CAPACITY_ROW235 - value / 5);
 	}
 
-
 	/**
 	 * Processes 3rd row on Berlin Clock to display Hour.
+	 * 
 	 * @param sb
 	 * @param value
 	 */
@@ -105,27 +91,26 @@ public class BerlinUtils {
 		turnOffLamps(sb, CAPACITY_ROW235 - value % 5);
 	}
 
-
 	/**
 	 * Processes 4th row on Berlin Clock to display Minute.
+	 * 
 	 * @param sb
 	 * @param value
 	 */
 	private static void processRow4(final StringBuffer sb, final int value) {
-		for (int i = 0; i < value / 5; ++i) {
-			for (int j = 1; j <= value / 5; ++j) {
-				if (j % 3 == 0) {
-					sb.append(LAMP_RED);
-				} else {
-					sb.append(LAMP_YELLOW);
-				}
+		for (int i = 1; i <= value / 5; ++i) {
+			if (i % 3 == 0) {
+				sb.append(LAMP_RED);
+			} else {
+				sb.append(LAMP_YELLOW);
 			}
 		}
 		turnOffLamps(sb, CAPACITY_ROW4 - value / 5);
 	}
-	
+
 	/**
 	 * Processes 5th row on Berlin Clock to display Minute.
+	 * 
 	 * @param sb
 	 * @param value
 	 */
@@ -133,9 +118,10 @@ public class BerlinUtils {
 		turnOnYellows(sb, value % 5);
 		turnOffLamps(sb, CAPACITY_ROW235 - value % 5);
 	}
-	
+
 	/**
 	 * Turns off lamps in given set within given range
+	 * 
 	 * @param sb
 	 * @param amount
 	 */
@@ -147,6 +133,7 @@ public class BerlinUtils {
 
 	/**
 	 * Turns on lamps to Red in given set within given range
+	 * 
 	 * @param sb
 	 * @param amount
 	 */
@@ -158,6 +145,7 @@ public class BerlinUtils {
 
 	/**
 	 * Turns on lamps to Yellow in given set within given range
+	 * 
 	 * @param sb
 	 * @param amount
 	 */

@@ -1,16 +1,28 @@
 package com.ubs.opsit.interviews.exception;
 
-public class IllegalTimeInputException extends Exception {
+import com.ubs.opsit.interviews.tools.ExcType;
 
-	public static final String DESC_ILL_HOUR = "Incorrect hour format";
-	public static final String DESC_ILL_MINUTE = "Incorrect minute format.";
-	public static final String DESC_ILL_SECOND = "Incorrect second format.";
-	public static final String DESC_ILL_FORMAT = "Input doesn't fit HH:MM:SS format.";
+/**
+ * Input validation failure throws this Exception.
+ * @author CEMONUR
+ *
+ */
+public class IllegalTimeInputException extends Exception {
+	
+	private ExcType excType;
 	private String value;
 	
-	public IllegalTimeInputException(final String description, final String value){
-		super(description);
-		this.setValue(value);
+	public IllegalTimeInputException(final ExcType excType, final String value){
+		this.excType = excType;
+		this.value = value;
+	}
+
+	public ExcType getExcType() {
+		return excType;
+	}
+
+	public void setExcType(ExcType excType) {
+		this.excType = excType;
 	}
 
 	public String getValue() {
